@@ -1,5 +1,5 @@
+USING: io.encodings.utf8 io.files kernel math.parser sequences ;
 IN: aoc-2023
-USING: io.encodings.utf8 io.files kernel sequences ;
 
 : input-path ( daynum -- txtpath )         ! 1
   number>string 2 CHAR: 0 pad-head         ! "01"
