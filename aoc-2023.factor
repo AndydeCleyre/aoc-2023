@@ -7,10 +7,10 @@ IN: aoc-2023
   "vocab:aoc-2023/" "/input.txt" surround  ! "vocab:aoc-2023/day01/input.txt"
 ;
 
-MEMO: day-lines ( daynum -- lineseq )
+: day-lines ( daynum -- lineseq )
   input-path utf8 file-lines
 ;
 
-MEMO: day-text ( daynum -- contentstr )
+: day-text ( daynum -- contentstr )
   input-path utf8 file-contents
 ;
