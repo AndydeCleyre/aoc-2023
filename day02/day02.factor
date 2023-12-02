@@ -14,7 +14,7 @@ IN: aoc-2023.day02
 : line>known-rgb ( str -- game-id known-rgb )
 ! "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green" -- 1 { 4 2 6 }
   ": " split1 [ split-words last string>number ] dip
-  R/ \d+ red/ over R/ \d+ green/ over R/ \d+ blue/ [ known-color ] 2tri@ 3array
+  R/ \d+ red/ R/ \d+ green/ R/ \d+ blue/ [ known-color ] tri-curry@ tri 3array
 ;
 
 : possible? ( known-rgb test-rgb -- ? )
