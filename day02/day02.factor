@@ -1,7 +1,8 @@
 #!/usr/bin/env factor
 
-USING: aoc-2023 arrays assocs kernel math math.parser
-math.vectors prettyprint regexp sequences splitting ;
+USING: arrays assocs io.encodings.utf8 io.files kernel math
+math.parser math.vectors prettyprint regexp sequences splitting
+;
 IN: aoc-2023.day02
 
 : known-color ( color-phrases regexp -- n )
@@ -24,14 +25,14 @@ IN: aoc-2023.day02
 ;
 
 : part1 ( -- )
-  2 day-lines
+  "input.txt" utf8 file-lines
   [ line>known-rgb 2array ] map
   [ last { 12 13 14 } possible? ] filter
   [ first ] map-sum .
 ;
 
 : part2 ( -- )
-  2 day-lines
+  "input.txt" utf8 file-lines
   [ line>known-rgb nip product ] map-sum .
 ;
 
