@@ -1,7 +1,7 @@
 #!/usr/bin/env factor
 
 USING: aoc-2023 arrays assocs kernel math math.parser
-prettyprint regexp sequences splitting ;
+math.vectors prettyprint regexp sequences splitting ;
 IN: aoc-2023.day02
 
 : known-color ( color-phrases regexp -- n )
@@ -19,7 +19,7 @@ IN: aoc-2023.day02
 
 : possible? ( known-rgb test-rgb -- ? )
 ! { 4 2 6 } { 12 13 4 } -- f
-  zip [ first2 <= ] map first3 and and
+  v<= [ ] all?
 ;
 
 : part1 ( -- )
