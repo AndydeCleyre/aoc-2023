@@ -32,7 +32,7 @@ IN: aoc-2023.day02
 
 : part2 ( -- )
   2 day-lines
-  [ line>known-rgb nip first3 * * ] map-sum .
+  [ line>known-rgb nip product ] map-sum .
 ;
 
 MAIN: [ part1 part2 ]
