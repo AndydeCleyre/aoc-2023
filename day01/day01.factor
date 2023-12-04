@@ -44,7 +44,7 @@ CONSTANT: digit-words H{
 ;
 
 : last-digit-word ( str -- num-char/f )   ! "threexyz"
-  reverse                                 !  "zyxeerht"
+  reverse                                 ! "zyxeerht"
   [
     digit-words keys [                    ! "zyxeerht" "three"
       reverse                             ! "zyxeerht" "eerht"
