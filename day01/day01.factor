@@ -1,11 +1,12 @@
 #!/usr/bin/env factor
 
-USING: aoc-2023 arrays assocs assocs.extras kernel make math
-math.parser prettyprint sequences sorting unicode ;
+USING: arrays assocs assocs.extras io.encodings.utf8 io.files
+kernel make math math.parser prettyprint sequences sorting
+unicode ;
 IN: aoc-2023.day01
 
 : part1 ( -- )
-  1 day-lines
+  "vocab:aoc-2023/day01/input.txt" utf8 file-lines
   [
     [ [ digit? ] find nip ]
     [ [ digit? ] find-last nip ] bi
@@ -84,7 +85,7 @@ CONSTANT: digit-words H{
 ;
 
 : part2 ( -- )
-  1 day-lines
+  "vocab:aoc-2023/day01/input.txt" utf8 file-lines
   [ [ first-digit ] [ last-digit ] bi 2array string>number ] map-sum .
 ;
 
