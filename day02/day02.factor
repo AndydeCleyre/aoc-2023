@@ -1,14 +1,14 @@
 #!/usr/bin/env factor
 
-USING: arrays assocs io.encodings.utf8 io.files kernel math
-math.parser math.vectors prettyprint regexp sequences splitting
-;
+USING: arrays assocs io.encodings.utf8 io.files kernel
+math.parser math.vectors prettyprint regexp sequences
+sequences.extras splitting ;
 IN: aoc-2023.day02
 
 : known-color ( color-phrases regexp -- n )
 ! "3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green" R/ \d+ red/ -- 4
   all-matching-subseqs [ 0 ] [
-    [ split-words first string>number ] map supremum
+    [ split-words first string>number ] map-supremum
   ] if-empty
 ;
 
@@ -25,14 +25,14 @@ IN: aoc-2023.day02
 ;
 
 : part1 ( -- )
-  "input.txt" utf8 file-lines
-  [ line>known-rgb 2array ] map
-  [ last { 12 13 14 } possible? ] filter
+  "vocab:aoc-2023/day02/input.txt" utf8 file-lines
+  [ line>known-rgb 2array ]
+  [ last { 12 13 14 } possible? ] map-filter
   [ first ] map-sum .
 ;
 
 : part2 ( -- )
-  "input.txt" utf8 file-lines
+  "vocab:aoc-2023/day02/input.txt" utf8 file-lines
   [ line>known-rgb nip product ] map-sum .
 ;
 
