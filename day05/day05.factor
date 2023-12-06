@@ -53,7 +53,7 @@ IN: aoc-2023.day05
 !   [ [ first ] [ first ] [ second ] tri + [a..b) ] map-concat  ! { 79 ... 92 55 ... 67 }
 ! ;
 
-! : part2 ( -- ) input>data [ seed-ranges ] dip solve . ;
+! : part2 ( -- ) input>data [ fix-seeds ] dip solve . ;
 
 ! --------------------
 ! -- Part 2, take 2 --
