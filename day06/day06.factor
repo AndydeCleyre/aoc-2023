@@ -17,7 +17,7 @@ IN: aoc-2023.day06
 ;
 
 : beats-record? ( press-ms race -- ? )
-  [ first go ] keep last >
+  [ first go ] [ last ] bi >
 ;
 
 : ways-to-beat ( race -- n )  ! { 7 9 }
