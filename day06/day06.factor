@@ -1,7 +1,7 @@
 #!/usr/bin/env factor
 
 USING: assocs io.encodings.utf8 io.files kernel math math.parser
-prettyprint ranges sequences sequences.extras splitting ;
+prettyprint ranges sequences sequences.extras sets splitting ;
 IN: aoc-2023.day06
 
 ! race: { time record-distance }
@@ -32,8 +32,8 @@ IN: aoc-2023.day06
 ;
 
 : input>big-race ( -- race )
-  "vocab:aoc-2023/day06/input.txt" utf8 file-lines               ! { "Time:      7  15   30" "Distance:  9  40  200" }
-  [ ":" split1 nip [ CHAR: space = ] reject string>number ] map  ! { 71530 940200 }
+  "vocab:aoc-2023/day06/input.txt" utf8 file-lines  ! { "Time:      7  15   30" "Distance:  9  40  200" }
+  [ ":" split1 nip " " without string>number ] map  ! { 71530 940200 }
 ;
 
 : part2 ( -- )
