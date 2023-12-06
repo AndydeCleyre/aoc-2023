@@ -20,14 +20,15 @@ IN: aoc-2023.day06
   [ first go ] keep last >
 ;
 
+: ways-to-beat ( race -- n )  ! { 7 9 }
+  dup first [1..b)            ! { 7 9 } [1..6]
+  [                           ! { 7 9 } 1
+    over beats-record?        ! { 7 9 } f
+  ] map [ ] count nip         ! 4
+;
+
 : part1 ( -- )
-  input>data              ! races
-  [                       ! { 7 9 }
-    dup first [1..b)      ! { 7 9 } [1..6]
-    [                     ! { 7 9 } 1
-      over beats-record?  ! { 7 9 } f
-    ] map [ ] count nip   ! 4
-  ] map-product .         ! 288 .
+  input>data [ ways-to-beat ] map-product .
 ;
 
 : input>big-race ( -- race )
@@ -36,11 +37,7 @@ IN: aoc-2023.day06
 ;
 
 : part2 ( -- )
-  input>big-race    ! race
-  dup first [1..b)  ! race ms-range
-  [
-    over beats-record?
-  ] map [ ] count nip .
+  input>big-race ways-to-beat .
 ;
 
 MAIN: [ part1 part2 ]
