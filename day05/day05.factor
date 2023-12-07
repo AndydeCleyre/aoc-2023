@@ -1,6 +1,6 @@
 #!/usr/bin/env factor
 
-USING: grouping io.encodings.utf8 io.files kernel math
+USING: accessors grouping io.encodings.utf8 io.files kernel math
 math.intervals math.order math.parser prettyprint ranges
 sequences sequences.extras splitting ;
 IN: aoc-2023.day05
@@ -61,9 +61,9 @@ IN: aoc-2023.day05
 
 ! -- solve hangs with huge seed seqs --
 
-! : seed-ranges ( seeds -- ranges )                      ! { 79 14 55 13 }
-!   2 group                                              ! { { 79 14 } { 55 13 } }
-!   [ [ first ] [ first ] [ second ] tri + [a..b) ] map  ! { [79..92] [55..67] }
+! : seed-ranges ( seeds -- ranges )  ! { 79 14 55 13 }
+!   2 group                          ! { { 79 14 } { 55 13 } }
+!   [ first2 1 range boa ] map       ! { [79..92] [55..67] }
 ! ;
 
 ! : part2 ( -- ) input>data [ seed-ranges ] dip '[ _ solve ] map-infimum . ;
@@ -78,6 +78,28 @@ IN: aoc-2023.day05
 !   '[ _ seed>location ] [ unclip ] dip             ! eeds s [ stage-maps seed>location ]
 !   [ call ] keep swapd                             ! min-loc eeds [ stage-maps seed>location ]
 !   '[ @ min ] each                                 ! min-loc'
+! ;
+
+! : part2 ( -- )
+!   input>data [ seed-ranges ] dip        ! ranges stage-maps
+!   '[ _ solve-carefully ] map-infimum .
+! ;
+
+! --------------------
+! -- Part 2, take 4 --
+! --------------------
+
+! -- solve-carefully still hangs with the full input --
+
+! : range-unclip ( range -- ange r )
+!   [ [ from>> 1 + ] [ length>> 1 - ] bi 1 range boa ] [ from>> ] bi
+! ;
+
+! : solve-carefully ( seeds-range stage-maps -- n )  ! range stage-maps
+!   '[ _ seed>location ]                             ! range [ stage-maps seed>location ]
+!   [ range-unclip ] dip                             ! ange r [ stage-maps seed>location ]
+!   [ call ] keep swapd                              ! min-loc ange [ stage-maps seed>location ]
+!   '[ @ min ] each                                  ! min-loc'
 ! ;
 
 ! : part2 ( -- )
