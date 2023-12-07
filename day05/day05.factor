@@ -48,9 +48,9 @@ IN: aoc-2023.day05
 
 ! -- fix-seeds runs out of memory during concat --
 
-! : fix-seeds ( seeds -- seeds' )                               ! { 79 14 55 13 }
-!   2 group                                                     ! { { 79 14 } { 55 13 } }
-!   [ [ first ] [ first ] [ second ] tri + [a..b) ] map-concat  ! { 79 ... 92 55 ... 67 }
+! : fix-seeds ( seeds -- seeds' )      ! { 79 14 55 13 }
+!   2 group                            ! { { 79 14 } { 55 13 } }
+!   [ first2 1 range boa ] map-concat  ! { 79 ... 92 55 ... 67 }
 ! ;
 
 ! : part2 ( -- ) input>data [ fix-seeds ] dip solve . ;
