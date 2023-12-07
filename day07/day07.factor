@@ -1,8 +1,9 @@
 #!/usr/bin/env factor
 
 USING: arrays assocs combinators.short-circuit.smart
-io.encodings.utf8 io.files kernel math math.order math.parser
-math.statistics prettyprint sequences sets sorting splitting ;
+io.encodings.utf8 io.files kernel make math math.order
+math.parser math.statistics prettyprint sequences sets sorting
+splitting ;
 IN: aoc-2023.day07
 
 ! hand: "A23A4"
@@ -47,7 +48,38 @@ IN: aoc-2023.day07
   [ 1 + swap last * ] map-index sum .
 ;
 
-! : part2 ( -- )
-! ;
+! -- part2 is slow, but it does work --
 
-! MAIN: [ part1 part2 ]
+: card-key-wilds ( ch -- n ) "J23456789TQKA" index ;
+
+: explode-wilds ( hand -- hands )
+  [                             ! hand
+    "J" split1                  ! before after/f
+    dup not [ drop , ] [        ! before after
+      { "2" "3" "4" "5" "6" "7" "8" "9" "T" "Q" "K" "A" }
+      [                         ! before after "2"
+        [ 2dup ] dip glue       ! before after "before2after"
+        dup CHAR: J swap in? [  ! "5" "J99" "52J99"
+          explode-wilds %       ! "5" "J99"
+        ] [ , ] if              ! "5" "J99"
+      ] each 2drop              !
+    ] if                        !
+  ] { } make                    ! hands
+;
+
+: hand-compare-wilds ( hand1 hand2 -- <=> )             ! hand1 hand2
+  2dup [ explode-wilds [ type-key ] sort-by last ] bi@  ! hand1 hand2 hand1-best hand2-best
+  [ type-key ] compare                                  ! hand1 hand2 +gt+/+eq+/+lt+
+  dup +eq+ = [                                          ! hand1 hand2 +eq+
+    drop zip [ first2 [ card-key-wilds ] compare ] map  ! { +eq+ +eq+ +gt+ +eq+ +eq+ }
+    { +eq+ } without ?first                             ! +gt+/f
+    dup [ drop +eq+ ] unless                            ! +eq+
+  ] [ [ 2drop ] dip ] if                                ! +gt+/+eq+/+lt+
+;
+
+: part2 ( -- )
+  input>hand-bids [ [ first ] bi@ hand-compare-wilds ] sort-with  ! hand-bids
+  [ 1 + swap last * ] map-index sum .
+;
+
+MAIN: [ part1 part2 ]
