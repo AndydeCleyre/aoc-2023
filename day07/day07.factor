@@ -31,8 +31,7 @@ IN: aoc-2023.day07
 :: (hand-compare) ( hand1 hand2 type-key-quot card-key-quot -- <=> )  ! hand1 hand2
   hand1 hand2 type-key-quot compare                                   ! +gt+/+eq+/+lt+
   dup +eq+ = [                                                        ! +eq+
-    drop hand1 hand2 zip [ first2 card-key-quot compare ] map         ! { +eq+ +eq+ +gt+ +eq+ +eq+ }
-    ! drop hand1 hand2 [ card-key-quot compare ] 2map                 ! { +eq+ +eq+ +gt+ +eq+ +eq+ }
+    drop hand1 hand2 [ card-key-quot compare ] { } 2map-as            ! { +eq+ +eq+ +gt+ +eq+ +eq+ }
     { +eq+ } without ?first                                           ! +gt+/+lt+/f
     dup [ drop +eq+ ] unless                                          ! +gt+/+eq+/+lt+
   ] when                                                              ! +gt+/+eq+/+lt+
