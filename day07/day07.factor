@@ -28,24 +28,29 @@ IN: aoc-2023.day07
   ] until 2drop                      ! n
 ;
 
-: hand-compare ( hand1 hand2 -- <=> )             ! "77888" "77788"
-  2dup [ type-key ] compare                       ! hand1 hand2 +gt+/+eq+/+lt+
-  dup +eq+ = [                                    ! hand1 hand2 +eq+
-    drop zip [ first2 [ card-key ] compare ] map  ! { +eq+ +eq+ +gt+ +eq+ +eq+ }
-    { +eq+ } without ?first                       ! +gt+/f
-    dup [ drop +eq+ ] unless                      ! +eq+
-  ] [ [ 2drop ] dip ] if                          ! +gt+/+eq+/+lt+
-;
+:: (hand-compare) ( hand1 hand2 type-key-quot card-key-quot -- <=> )  ! hand1 hand2
+  hand1 hand2 type-key-quot compare                                   ! +gt+/+eq+/+lt+
+  dup +eq+ = [                                                        ! +eq+
+    drop hand1 hand2 zip [ first2 card-key-quot compare ] map         ! { +eq+ +eq+ +gt+ +eq+ +eq+ }
+    ! drop hand1 hand2 [ card-key-quot compare ] 2map                 ! { +eq+ +eq+ +gt+ +eq+ +eq+ }
+    { +eq+ } without ?first                                           ! +gt+/+lt+/f
+    dup [ drop +eq+ ] unless                                          ! +gt+/+eq+/+lt+
+  ] when                                                              ! +gt+/+eq+/+lt+
+; inline
+
+: hand-compare ( hand1 hand2 -- <=> ) [ type-key ] [ card-key ] (hand-compare) ;
 
 : input>hand-bids ( -- hand-bids )
   "vocab:aoc-2023/day07/input.txt" utf8 file-lines
   [ " " split1 string>number 2array ] map
 ;
 
-: part1 ( -- )
-  input>hand-bids [ [ first ] bi@ hand-compare ] sort-with  ! hand-bids
+: solve ( hand-compare-quot -- )
+  '[ [ first ] bi@ @ ] input>hand-bids swap sort-with  ! hand-bids
   [ 1 + swap last * ] map-index sum .
-;
+; inline
+
+: part1 ( -- ) [ hand-compare ] solve ;
 
 : card-key-wilds ( ch -- n ) "J23456789TQKA" index ;
 
@@ -62,18 +67,8 @@ IN: aoc-2023.day07
   } case
 ;
 
-: hand-compare-wilds ( hand1 hand2 -- <=> )             ! hand1 hand2
-  2dup [ type-key-wilds ] compare                       ! hand1 hand2 +gt+/+eq+/+lt+
-  dup +eq+ = [                                          ! hand1 hand2 +eq+
-    drop zip [ first2 [ card-key-wilds ] compare ] map  ! { +eq+ +eq+ +gt+ +eq+ +eq+ }
-    { +eq+ } without ?first                             ! +gt+/f
-    dup [ drop +eq+ ] unless                            ! +eq+
-  ] [ [ 2drop ] dip ] if                                ! +gt+/+eq+/+lt+
-;
+: hand-compare-wilds ( hand1 hand2 -- <=> ) [ type-key-wilds ] [ card-key-wilds ] (hand-compare) ;
 
-: part2 ( -- )
-  input>hand-bids [ [ first ] bi@ hand-compare-wilds ] sort-with  ! hand-bids
-  [ 1 + swap last * ] map-index sum .
-;
+: part2 ( -- ) [ hand-compare-wilds ] solve ;
 
 MAIN: [ part1 part2 ]
